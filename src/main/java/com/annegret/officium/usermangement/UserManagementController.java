@@ -92,7 +92,7 @@ public class UserManagementController {
         }
     }
 
-    public UserResponse checkIfExists(UserEntity userEntity) throws  ResponseStatusException {
+    private UserResponse checkIfExists(UserEntity userEntity) throws  ResponseStatusException {
         //Check on nullable
         if (userEntity.getUsername() == null || userEntity.getEmailAddress() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User name and email address cannot be null");
