@@ -1,0 +1,259 @@
+openapi: 3.0.2
+info:
+  title: User Management
+  version: 1.0.0
+paths:
+  /users:
+    get:
+      description: This is only a test path and delivers back one static string
+      operationId: getUsersTest
+      responses:
+        '200':
+          description: Test operation successful
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Test"
+    post:
+      description: Can be used to create a new user
+      operationId: addNewUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userRequest'
+      responses:
+        '200':
+          description: Creates a new user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userResponse'
+        '401':
+          description: Invalid call
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+
+  /users/{userid}:
+    get:
+      description: Gets a single user by its id
+      operationId: getSingleUser
+      parameters:
+        - name: userid
+          in: path
+          required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userResponse'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+    put:
+      description: Can change a user given by its id
+      operationId: updateSingleUser
+      parameters:
+        - name: userid
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userResponse'
+        '401':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+
+  /users/{userid}/profileimage:
+    get:
+      description: Gets the profile image of a particular user given by its id
+      parameters:
+        - name: userid
+          in: path
+          required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserImage'
+    put:
+      description: Puts an image of user to his profile
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserImage'
+
+
+components:
+  schemas:
+    userRequest:
+      type: object
+      required:
+        - username
+        - emailaddress
+      properties:
+        name:
+          type: string
+          description: name of the user
+          example: "Foo"
+        surname:
+          type: string
+          description: first name of the user
+          example: "John"
+        username:
+          type: string
+          description: user name of the user, user name has to be unique in the system, can be used for login
+          example: "johnfoo"
+        emailaddress:
+          type: string
+          format: email
+          description: e-mail address of the user, needs to be unique in the system, can be used for login
+          example: "john.foo@organization.com"
+        password:
+          type: string
+          description: hash value of the original password of the user
+          example: "02348ß9831ß498"
+        defaultPicture:
+          type: string
+          description: Name of a default picture provided by the system
+          example: "robbery chieftain"
+    userResponse:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: '21a2bac3-a2c4-4e45-b6da-2248bb36b82e'
+        user:
+          $ref: '#/components/schemas/userRequest'
+        message:
+          $ref: '#/components/schemas/Message'
+        usefulLinks:
+          type: array
+          items:
+            $ref: '#/components/schemas/UsefulLink'
+
+    UsefulLink:
+      type: object
+      description: Link to an object which can be enhanced
+      properties:
+        href:
+          type: string
+          format: uriref
+          description: Referenz link to a helpful information
+          example: 'http://mytaskmanagerserver/users/bf62265f-77e3-413c-b40a-0a72da00b7b'
+        type:
+          type: string
+          description: type of according reference
+          enum:
+            - PDF
+            - Hyperlink
+          example: 'Hyperlink'
+        relation:
+          type: string
+          description: Relation of the according link to the provided object, Object usually
+            means the access to the object itself
+          enum:
+            - Object
+            - Assignee
+            - Thread
+          example: 'Assignee'
+
+    Message:
+      type: object
+      description: Message in case of an error
+      required:
+        - Code
+        - Severity
+        - Message
+        - TrackingId
+      properties:
+        Code:
+          type: string
+          description: Code of the according error
+          example: 'TASKCREATED'
+        Severity:
+          type: string
+          description: Severity of the according message
+          enum:
+            - SUCCESS
+            - WARNING
+            - ERROR
+            - CRITICALERROR
+          example: 'SUCCESS'
+        Message:
+          type: string
+          description: Message of the according action
+          example: 'Task Create a new task management successfully created'
+        TrackingId:
+          type: string
+          description: Unique ID to follow a message through the entire system
+          example: '30ddd105-fe30-4b4a-b993-379ef903201b'
+
+    UserImage:
+      type: object
+      description: Profile picture of a particular user
+      required:
+        - id
+        - image
+      properties:
+        id:
+          type: string
+          description: ID of the particular user
+          format: uuid
+          example: '30ddd105-fe30-4b4a-b993-379ef903201b'
+        fileName:
+          type: string
+          description: File name of the image
+          example: 'john.png'
+        mimeType:
+          type: string
+          enum:
+            - png
+            - jpg
+          description: Mime type of the picture
+          example: 'png'
+        image:
+          type: string
+          description: byte array as presentation of binary image
+          format: binary
+
+
+        
+        
+
+
+
