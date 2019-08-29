@@ -14,7 +14,6 @@
     <name>usermangement</name>
     <description>Officium user management simplified</description>
     <packaging>jar</packaging>
-    <description>Officium - Light weight project management</description>
 
     <properties>
         <java.version>11</java.version>
