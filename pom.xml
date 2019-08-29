@@ -10,10 +10,11 @@
     </parent>
     <groupId>com.annegret.officium</groupId>
     <artifactId>usermangement</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>usermangement</name>
     <description>Officium user management simplified</description>
-    
+    <packaging>jar</packaging>
+    <description>Officium - Light weight project management</description>
 
     <properties>
         <java.version>11</java.version>
