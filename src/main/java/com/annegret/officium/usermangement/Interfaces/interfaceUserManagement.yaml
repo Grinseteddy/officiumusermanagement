@@ -90,35 +90,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Message'
 
-  /user/name/{username}:
-    get:
-      description: Get user by its user name
-      parameters:
-        - name: username
-          in: path
-          required: true
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/userResponse'
-
-  /user/email/{emailaddress}:
-    get:
-      description: Get user by its email address
-      parameters:
-        - name: emailaddress
-          in: path
-          required: true
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/userResponse'
 
   /users/{userid}/profileimage:
     get:
